@@ -1,0 +1,118 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+:root {
+  --cell-size: 150px;
+  --mark-size: calc(var(--cell-size) * 0.9);
+}
+body {
+  margin: 0;
+}
+.board {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: center;
+  align-content: center;
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: #fff;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.cell.x,
+.cell.circle {
+  cursor: not-allowed;
+}
+.cell:nth-child(-n + 3) {
+  border-top: none;
+}
+.cell:nth-child(3n) {
+  border-right: none;
+}
+.cell:nth-child(3n-2) {
+  border-left: none;
+}
+.cell:nth-child(n + 6) {
+  border-bottom: none;
+}
+
+/* left bar of x icon is before element and the right - after */
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after,
+.cell.x::before,
+.cell.x::after {
+  content: "";
+  position: absolute;
+  width: calc(var(--mark-size) * 0.15);
+  height: var(--mark-size);
+  background-color: #000;
+}
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before {
+  transform: rotate(45deg);
+}
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after {
+  transform: rotate(-45deg);
+}
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after {
+  background-color: gray;
+}
+
+/* no need of two psudo element here one is enough for a white circle with black border */
+.cell.circle::before,
+.board.circle .cell:not(.x):not(.circle):hover::before {
+  content: "";
+  position: absolute;
+  width: calc(var(--mark-size) * 0.9);
+  height: calc(var(--mark-size) * 0.9);
+  background-color: #fff;
+  border: calc(var(--mark-size) * 0.13) solid #000;
+  border-radius: 50%;
+}
+.board.circle .cell:not(.x):not(.circle):hover::before {
+  border-color: gray;
+}
+.winning-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 5rem;
+}
+.winning-message button {
+  font-size: 3rem;
+  background-color: #fff;
+  border: 1px solid black;
+  padding: 0.25em 0.5rem;
+  cursor: pointer;
+}
+.winning-message button:hover {
+  background-color: #000;
+  color: #fff;
+  border-color: #fff;
+}
+.winning-message.show {
+  display: flex;
+}
